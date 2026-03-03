@@ -143,7 +143,7 @@ $show_hint = ('ad' == isset($GLOBALS['AUTH_MODULE_PARAMS']['type']) ? $GLOBALS['
 $smarty->assign('forms', array($form->getName()=>$form->toArray()));
 $smarty->assign('show_hint', $show_hint);
 $smarty->assign('onload', 'onLoad="document.loginForm.'.(!$cl_login?'login':'password').'.focus()"');
-$smarty->assign('about_text', $i18n->get('form.login.about'));
+//$smarty->assign('about_text', $i18n->get('form.login.about'));
 $smarty->assign('title', $i18n->get('title.login'));
 $smarty->assign('content_page_name', 'login.tpl');
 $smarty->display('index.tpl');

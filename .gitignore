@@ -4,6 +4,7 @@ WEB-INF/templates_c/import_*
 WEB-INF/templates_c/tt*
 WEB-INF/lib/tcpdf/
 nbproject/
+anuko_db/
 upload/
 .vscode/
 Thumbs.db
@@ -11,3 +12,4 @@ Thumbs.db
 *~
 .idea/
 api/
+.env

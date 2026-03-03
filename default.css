@@ -268,7 +268,6 @@ div.record-list {
 
 /* input controls with focus on them */
 .page-content input:focus {
-  background-color: yellow;
   border: 1px solid black;
   outline: none;
 }
@@ -386,7 +385,6 @@ input[type="text"].short-text-field {
 
 /* textareas with focus */
 #description:focus, #address:focus, #item_name:focus, #comment:focus, #custom_css:focus, #custom_translation:focus, #content:focus {
-  background-color: yellow;
   border: 1px solid black;
   outline: none;
 }
@@ -404,7 +402,6 @@ input[type="text"].short-text-field {
 
 /* note field with focus */
 #note:focus {
-  background-color: yellow;
   border: 1px solid black;
   outline: none;
 }
