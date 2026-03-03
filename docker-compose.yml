@@ -7,11 +7,13 @@ services:
     build:
       context: .
       dockerfile: dockerfile-tt
-    image: anuko_timetracker:dev
+    image: sirmysterion/anuko_timetracker
     container_name: anuko-timetracker
     # Use localhost:8080 to connect to timetracker via browser.
     ports:
      - "8080:80"
+    #volumes:
+    # - ./config.php:/var/www/html/WEB-INF/config.php
 
   # anuko_db is a mariadb instance to which timetracker connects.
   # Connect parameters are also specified in timetracker dockerfile after
@@ -23,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile-db
-    image: "anuko_database:dev"
+    image: sirmysterion/anuko_database
     container_name: anuko-database
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
