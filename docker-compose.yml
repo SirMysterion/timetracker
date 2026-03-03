@@ -7,7 +7,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile-tt
-    image: sirmysterion/anuko_timetracker
+    image: sirmysterion/anuko_timetracker:dark
     container_name: anuko-timetracker
     # Use localhost:8080 to connect to timetracker via browser.
     ports:
