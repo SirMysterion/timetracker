@@ -45,7 +45,7 @@ if ($request->isPost()) {
     $loginSucceeded = $auth->doLogin($cl_login, $cl_password);
     if ($loginSucceeded) {
       // Remember user login in a cookie.
-      setcookie(LOGIN_COOKIE_NAME, $cl_login, time() + COOKIE_EXPIRE, '/');
+      setcookie(LOGIN_COOKIE_NAME, $cl_login, ttCookieOptions(time() + COOKIE_EXPIRE));
     } else {
       $err->add($i18n->get('error.auth'));
     }

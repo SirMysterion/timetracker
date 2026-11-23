@@ -577,6 +577,19 @@ function ttAccessAllowed($required_right)
   return false;
 }
 
+// ttIsHttps determines whether the browser connected over https, including
+// when TLS is terminated by a reverse proxy or gateway in front of the app.
+function ttIsHttps() {
+  if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') return true;
+  $proto = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : '';
+  return strtolower(trim(explode(',', $proto)[0])) === 'https';
+}
+
+// ttCookieOptions returns the security attributes used for all application cookies.
+function ttCookieOptions($expires) {
+  return array('expires'=>$expires, 'path'=>'/', 'secure'=>ttIsHttps(), 'httponly'=>true, 'samesite'=>'Lax');
+}
+
 // ttMitigateCSRF verifies request headers in an attempt to block cross site request forgery.
 function ttMitigateCSRF() {
   // No need to do anything for get requests.

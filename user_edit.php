@@ -235,7 +235,7 @@ if ($request->isPost()) {
       if ($result) {
         // If our own login changed, set new one in cookie to remember it.
         if (($user_id == $user->id) && ($user->login != $cl_login)) {
-          setcookie(LOGIN_COOKIE_NAME, $cl_login, time() + COOKIE_EXPIRE, '/');
+          setcookie(LOGIN_COOKIE_NAME, $cl_login, ttCookieOptions(time() + COOKIE_EXPIRE));
         }
 
         // In case the name of the "on behalf" user has changed - set it in session.

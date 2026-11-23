@@ -80,16 +80,20 @@ if (!defined('SESSION_COOKIE_NAME')) define('SESSION_COOKIE_NAME', 'tt_PHPSESSID
 if (!defined('LOGIN_COOKIE_NAME')) define('LOGIN_COOKIE_NAME', 'tt_login');
 
 // Set session cookie lifetime.
-session_set_cookie_params($phpsessid_ttl);
-if (isset($_COOKIE[SESSION_COOKIE_NAME])) {
-  // Extend PHP session cookie lifetime by PHPSESSID_TTL (if defined, otherwise 24 hours) 
-  // so that users don't have to re-login during this period from now. 
-  setcookie(SESSION_COOKIE_NAME, $_COOKIE[SESSION_COOKIE_NAME],  time() + $phpsessid_ttl, '/');
-}
+session_set_cookie_params(array('lifetime'=>$phpsessid_ttl, 'path'=>'/', 'secure'=>ttIsHttps(),
+  'httponly'=>true, 'samesite'=>'Lax'));
+// Reject session ids that were not issued by this server.
+ini_set('session.use_strict_mode', '1');
 
 // Start or resume PHP session.
 session_name(SESSION_COOKIE_NAME);
 @session_start();
+
+if (isset($_COOKIE[SESSION_COOKIE_NAME]) && session_id()) {
+  // Extend PHP session cookie lifetime by PHPSESSID_TTL (if defined, otherwise 24 hours)
+  // so that users don't have to re-login during this period from now.
+  setcookie(SESSION_COOKIE_NAME, session_id(), ttCookieOptions(time() + $phpsessid_ttl));
+}
 
 // Authorization.
 import('Auth');

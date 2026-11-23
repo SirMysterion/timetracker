@@ -101,6 +101,10 @@ class Auth {
 
   // setAuth - stores authorization data in session.
   function setAuth($userid, $username) {
+    // Issue a new session id at login to prevent session fixation.
+    if (session_status() === PHP_SESSION_ACTIVE && !headers_sent())
+      session_regenerate_id(true);
+
     $_SESSION['authenticated'] = true;
     $_SESSION['authenticated_user_id'] = $userid; // NOTE: using "user_id" instead of "authenticated_user_id" gets us in trouble
                                                   // with older PHP when register_globals = On. What happens is that any time we set
