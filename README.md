@@ -14,3 +14,6 @@ December 28, 2023: Nik Okuntseff, the owner and lead software developer at Anuko
 * Forum: https://www.anuko.com/forum/viewforum.php?f=4
 * Info for developers: https://www.anuko.com/time-tracker/info-for-developers.htm
 * How to contribute: https://www.anuko.com/time-tracker/contribute.htm
+
+### SQL Restore
+docker exec -i anuko-database sh -c 'mariadb -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE' < timetrackerDUMP.sql
