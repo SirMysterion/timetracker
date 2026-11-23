@@ -36,19 +36,29 @@ class I18n {
 
   // get - obtains a localized value from $keys array.
   function get($key) {
-    $value = '';
-    $pos = strpos($key, '.'); // Keywords can have separating dots such as in form.login.about.
-    if (!($pos === false)) {
-      $words = explode('.', $key);
-      $str = '';
-      foreach ($words as $word) {
-        $str .= "['".$word."']";
-      }
-      eval("\$value = \$this->keys".$str.";");
-    } else {
-      $value = $this->keys[$key];
+    // Keywords can have separating dots such as in form.login.about.
+    $value = $this->keys;
+    foreach (explode('.', $key) as $word) {
+      if (!is_array($value) || !array_key_exists($word, $value)) return null;
+      $value = $value[$word];
     }
     return $value;
+  }
+
+  // setKey stores a value under a dotted key without building any PHP code.
+  private function setKey($key, $value) {
+    $node = &$this->keys;
+    foreach (explode('.', $key) as $word) {
+      if (!isset($node[$word]) || !is_array($node[$word])) $node[$word] = array();
+      $node = &$node[$word];
+    }
+    $node = $value;
+  }
+
+  // unescapeLangValue removes the extra escaping layer used in language files
+  // for dotted keys, such as the backslash in L\'Arxiu.
+  private function unescapeLangValue($value) {
+    return strtr($value, array('\\\\' => '\\', "\\'" => "'"));
   }
 
   // get - keyExists determines if a key exists.
@@ -74,12 +84,7 @@ class I18n {
       foreach ($i18n_key_words as $kword=>$value) {
         $pos = strpos($kword, ".");
         if (!($pos === false)) {
-          $p = explode(".", $kword);
-          $str = "";
-          foreach ($p as $w) {
-            $str .= "[\"".$w."\"]";
-          }
-          eval("\$this->keys".$str."='".$value."';");
+          $this->setKey($kword, $this->unescapeLangValue($value));
         } else {
           $this->keys[$kword] = $value;
         }
@@ -101,12 +106,7 @@ class I18n {
         if (!$value) continue;
         $pos = strpos($kword, ".");
         if (!($pos === false)) {
-          $p = explode(".", $kword);
-          $str = "";
-          foreach ($p as $w) {
-             $str .= "[\"".$w."\"]";
-          }
-          eval("\$this->keys".$str."='".$value."';");
+          $this->setKey($kword, $this->unescapeLangValue($value));
         } else {
           $this->keys[$kword] = $value;
         }
@@ -124,21 +124,8 @@ class I18n {
 
         $key = trim($parts[0]);
         $value = trim($parts[1]);
-        // Escape single quotes and backslashes.
-        $value = addcslashes($value, "'\\");
         $value = htmlspecialchars($value);
-
-        $pos = strpos($key, ".");
-        if (!($pos === false)) {
-          $p = explode(".", $key);
-          $str = "";
-          foreach ($p as $w) {
-             $str .= "[\"".$w."\"]";
-          }
-          eval("\$this->keys".$str."='".$value."';");
-        } else {
-          $this->keys[$key] = $value;
-        }
+        $this->setKey($key, $value);
       }
     }
   }
