@@ -157,7 +157,8 @@ class ttOrgHelper {
     if ($affected == 0) return true; // Do not call file storage utility.
 
     // Try to make a call to file storage server.
-    $storage_uri = defined('FILE_STORAGE_URI') ? FILE_STORAGE_URI : "https://www.anuko.com/files/";
+    if (!defined('FILE_STORAGE_URI')) return true; // Remote file storage is not configured.
+    $storage_uri = FILE_STORAGE_URI;
     $deleteorgfiles_uri = $storage_uri.'deleteorgfiles';
 
     // Obtain site id.

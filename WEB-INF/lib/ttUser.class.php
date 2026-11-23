@@ -321,6 +321,9 @@ class ttUser {
   // isPluginEnabled checks whether a plugin is enabled for user.
   function isPluginEnabled($plugin)
   {
+    // Attachments need a configured remote file storage.
+    if ($plugin === 'at' && !defined('FILE_STORAGE_URI')) return false;
+
     return in_array($plugin, explode(',', $this->getPlugins() ? $this->getPlugins() : ''));
   }
 

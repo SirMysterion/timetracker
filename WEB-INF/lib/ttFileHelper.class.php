@@ -19,7 +19,10 @@ class ttFileHelper {
   function __construct(&$errors) {
     $this->errors = &$errors;
 
-    $this->storage_uri = defined('FILE_STORAGE_URI') ? FILE_STORAGE_URI : "https://www.anuko.com/files/";
+    // Remote storage must be configured explicitly, files are never sent to a default host.
+    $this->storage_uri = defined('FILE_STORAGE_URI') ? FILE_STORAGE_URI : null;
+    if (!$this->storage_uri) return;
+
     $this->register_uri = $this->storage_uri.'register';
     $this->putfile_uri = $this->storage_uri.'putfile';
     $this->deletefile_uri = $this->storage_uri.'deletefile';
@@ -98,6 +101,10 @@ class ttFileHelper {
   // putFile - puts uploaded file in remote storage.
   function putFile($fields) {
     global $i18n;
+    if (!$this->storage_uri) {
+      $this->errors->add($i18n->get('error.file_storage'));
+      return false;
+    }
     global $user;
     $mdb2 = getConnection();
 
@@ -178,6 +185,10 @@ class ttFileHelper {
   // deleteFile - deletes a file from remote storage and its details from local database.
   function deleteFile($fields) {
     global $i18n;
+    if (!$this->storage_uri) {
+      $this->errors->add($i18n->get('error.file_storage'));
+      return false;
+    }
     global $user;
     $mdb2 = getConnection();
 
@@ -252,6 +263,7 @@ class ttFileHelper {
 
   // deleteEntityFiles - deletes all files associated with an entity.
   function deleteEntityFiles($entity_id, $entity_type) {
+    if (!$this->storage_uri) return true; // Nothing to delete remotely.
 
     if (!$this->entityHasFiles($entity_id, $entity_type))
       return true; // No files to delete.
@@ -405,6 +417,10 @@ class ttFileHelper {
   // getFile - downloads file from remote storage to memory.
   function getFile($fields) {
     global $i18n;
+    if (!$this->storage_uri) {
+      $this->errors->add($i18n->get('error.file_storage'));
+      return false;
+    }
     global $user;
     $mdb2 = getConnection();
 
