@@ -88,7 +88,7 @@ INSERT INTO `tt_roles` (`group_id`, `name`, `rank`, `rights`) VALUES (0, 'Top ma
 CREATE TABLE `tt_users` (
   `id` int(11) NOT NULL auto_increment,            # user id
   `login` varchar(80) COLLATE utf8mb4_bin NOT NULL,# user login
-  `password` varchar(50) default NULL,             # password hash
+  `password` varchar(255) default NULL,            # password hash
   `name` varchar(80) default NULL,                 # user name
   `group_id` int(11) NOT NULL,                     # group id
   `org_id` int(11) default NULL,                   # organization id
@@ -607,6 +607,16 @@ CREATE TABLE `tt_files` (
   `modified_by` int(10) unsigned,                # modifier user_id
   `status` tinyint(1) default 1,                 # file status
   PRIMARY KEY  (`id`)
+);
+
+
+#
+# Structure for table tt_login_attempts. This table stores recent failed logins for throttling.
+#
+CREATE TABLE `tt_login_attempts` (
+  `login_hash` char(64) NOT NULL,                  # sha256 of normalized login
+  `created` datetime NOT NULL,                     # time of failed attempt
+  KEY `login_attempts_idx` (`login_hash`, `created`)
 );
 
 

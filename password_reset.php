@@ -42,6 +42,13 @@ if ($request->isPost()) {
 
     // Protection against flooding user mailbox with too many password reset emails.
     if (ttUserHelper::recentRefExists($user->id)) $err->add($i18n->get('error.access_denied'));
+
+    // Reset links must point to the configured site, never to the request Host header.
+    $base_url = ttAppBaseUrl();
+    if (!$base_url) {
+      error_log('Time Tracker: define APP_BASE_URL in config.php to enable password reset emails.');
+      $err->add($i18n->get('error.sys'));
+    }
   }
 
   if ($err->no()) {
@@ -76,23 +83,9 @@ if ($request->isPost()) {
       $mailer->setCharSet(CHARSET);
       $mailer->setSender(SENDER);
       $mailer->setReceiver("$receiver");
-      $secure_connection = false;
-      if ((!empty($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] !== 'off')) || ($_SERVER['SERVER_PORT'] == 443))
-        $secure_connection = true;
-      if($secure_connection)
-        $http = 'https';
-      else
-        $http = 'http';
-
       $cl_subject = $user_i18n->get('form.reset_password.email_subject');
 
-      $dir_name = $app_root = '';
-      if (defined('DIR_NAME'))
-        $dir_name = trim(constant('DIR_NAME'), '/');
-      if (!empty($dir_name))
-        $app_root = '/'.$dir_name;
-
-      $pass_edit_url = $http.'://'.$_SERVER['HTTP_HOST'].$app_root.'/password_change.php?ref='.$temp_ref;
+      $pass_edit_url = $base_url.'/password_change.php?ref='.$temp_ref;
 
       $mailer->setMailMode(MAIL_MODE);
       if ($mailer->send($cl_subject, sprintf($user_i18n->get('form.reset_password.email_body'), $_SERVER['REMOTE_ADDR'], $pass_edit_url)))

@@ -577,6 +577,98 @@ function ttAccessAllowed($required_right)
   return false;
 }
 
+// ttIsModernHash determines whether a stored password uses password_hash().
+function ttIsModernHash($stored) {
+  return is_string($stored) && password_get_info($stored)['algo'] !== null;
+}
+
+// ttPasswordColumnReady determines whether tt_users.password can hold a modern hash.
+// Until the database migration runs, passwords keep using the legacy format so that
+// a new image can be deployed before the migration without locking anyone out.
+function ttPasswordColumnReady() {
+  static $ready = null;
+  if ($ready !== null) return $ready;
+
+  $ready = false;
+  $mdb2 = getConnection();
+  $sql = "select character_maximum_length as len from information_schema.columns".
+    " where table_schema = database() and table_name = 'tt_users' and column_name = 'password'";
+  $res = $mdb2->query($sql);
+  if (!is_a($res, 'PEAR_Error')) {
+    $val = $res->fetchRow();
+    $ready = $val && (int)$val['len'] >= 255;
+  }
+  return $ready;
+}
+
+// ttHashPassword returns a value to store in tt_users.password.
+function ttHashPassword($password) {
+  if (ttPasswordColumnReady())
+    return password_hash($password, PASSWORD_DEFAULT);
+
+  error_log('Time Tracker: tt_users.password is too short for modern hashes. Run the database migration.');
+  return md5($password);
+}
+
+// ttVerifyPassword checks a password against a modern or legacy MD5 hash.
+function ttVerifyPassword($password, $stored) {
+  if (!is_string($stored) || $stored === '') return false;
+  if (ttIsModernHash($stored)) return password_verify($password, $stored);
+  if (preg_match('/^[0-9a-f]{32}$/i', $stored)) return hash_equals(strtolower($stored), md5($password));
+  return false;
+}
+
+// ttUpgradePasswordHash replaces a legacy or outdated hash after a successful login.
+function ttUpgradePasswordHash($user_id, $password, $stored) {
+  if (!ttPasswordColumnReady()) return;
+  if (ttIsModernHash($stored) && !password_needs_rehash($stored, PASSWORD_DEFAULT)) return;
+
+  $mdb2 = getConnection();
+  $user_id = (int)$user_id;
+  $sql = "update tt_users set password = ".$mdb2->quote(password_hash($password, PASSWORD_DEFAULT)).
+    " where id = $user_id and password = ".$mdb2->quote($stored);
+  $mdb2->exec($sql);
+}
+
+// Login throttling. Failures are counted per login name because the client address
+// is not reliable behind a gateway. If the table is missing, logins are not blocked.
+define('TT_LOGIN_MAX_FAILURES', 10);
+define('TT_LOGIN_FAILURE_WINDOW_MINUTES', 15);
+
+function ttLoginThrottleKey($login) {
+  return hash('sha256', strtolower(trim((string)$login)));
+}
+
+// ttLoginThrottled determines whether a login has too many recent failures.
+function ttLoginThrottled($login) {
+  $mdb2 = getConnection();
+  $sql = "select count(*) as cnt from tt_login_attempts where login_hash = ".$mdb2->quote(ttLoginThrottleKey($login)).
+    " and created > now() - interval ".TT_LOGIN_FAILURE_WINDOW_MINUTES." minute";
+  $res = $mdb2->query($sql);
+  if (is_a($res, 'PEAR_Error')) return false;
+  $val = $res->fetchRow();
+  return (int)$val['cnt'] >= TT_LOGIN_MAX_FAILURES;
+}
+
+// ttRecordLoginFailure stores a failed attempt and removes expired ones.
+function ttRecordLoginFailure($login) {
+  $mdb2 = getConnection();
+  $mdb2->exec("delete from tt_login_attempts where created < now() - interval ".TT_LOGIN_FAILURE_WINDOW_MINUTES." minute");
+  $mdb2->exec("insert into tt_login_attempts (login_hash, created) values (".$mdb2->quote(ttLoginThrottleKey($login)).", now())");
+}
+
+// ttClearLoginFailures removes failed attempts after a successful login.
+function ttClearLoginFailures($login) {
+  $mdb2 = getConnection();
+  $mdb2->exec("delete from tt_login_attempts where login_hash = ".$mdb2->quote(ttLoginThrottleKey($login)));
+}
+
+// ttAppBaseUrl returns the configured public URL of the application.
+// The Host request header is not used because clients can forge it.
+function ttAppBaseUrl() {
+  return defined('APP_BASE_URL') ? rtrim(APP_BASE_URL, '/') : '';
+}
+
 // ttIsHttps determines whether the browser connected over https, including
 // when TLS is terminated by a reverse proxy or gateway in front of the app.
 function ttIsHttps() {

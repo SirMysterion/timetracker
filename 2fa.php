@@ -32,7 +32,7 @@ if ($request->isPost()) {
 
   if ($err->no()) {
     // Get user id.
-    $user_id = ttUserHelper::getUserIdByTmpRef($cl_auth_code);
+    $user_id = ttUserHelper::getUserIdByTmpRef($cl_auth_code, '2fa');
     if (!$user_id)
       $err->add($i18n->get('error.2fa_code'));
 
@@ -41,8 +41,14 @@ if ($request->isPost()) {
       // against brute force attacks guessing 2FA codes.
       $user = new ttUser(null, $user_id); // Note: reusing $user from initialize.php.
       // Check user password.
-      if (!$auth->doLogin($user->login, $cl_password))
+      $throttled = ttLoginThrottled($user->login);
+      if (!$throttled && $auth->doLogin($user->login, $cl_password)) {
+        ttClearLoginFailures($user->login);
+        ttUserHelper::deleteTmpRefs($user_id, '2fa'); // A code works only once.
+      } else {
+        if (!$throttled) ttRecordLoginFailure($user->login);
         $err->add($i18n->get('error.auth'));
+      }
     }
 
     if ($err->no()) {

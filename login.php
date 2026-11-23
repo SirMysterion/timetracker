@@ -42,11 +42,14 @@ if ($request->isPost()) {
     @include('plugins/limit/access_check.php');
 
     // Check user login.
-    $loginSucceeded = $auth->doLogin($cl_login, $cl_password);
+    $throttled = ttLoginThrottled($cl_login);
+    $loginSucceeded = !$throttled && $auth->doLogin($cl_login, $cl_password);
     if ($loginSucceeded) {
+      ttClearLoginFailures($cl_login);
       // Remember user login in a cookie.
       setcookie(LOGIN_COOKIE_NAME, $cl_login, ttCookieOptions(time() + COOKIE_EXPIRE));
     } else {
+      if (!$throttled) ttRecordLoginFailure($cl_login);
       $err->add($i18n->get('error.auth'));
     }
   }
@@ -71,7 +74,8 @@ if ($request->isPost()) {
     $random_bytes = openssl_random_pseudo_bytes(16, $cryptographically_strong);
     if ($random_bytes === false) die ("openssl_random_pseudo_bytes function call failed...");
     $temp_ref = bin2hex($random_bytes);
-    ttUserHelper::saveTmpRef($temp_ref, $user->id);
+    ttUserHelper::deleteTmpRefs($user->id, '2fa'); // Only the newest code is valid.
+    ttUserHelper::saveTmpRef($temp_ref, $user->id, '2fa');
 
     // For user languague in email.
     $user_i18n = null;

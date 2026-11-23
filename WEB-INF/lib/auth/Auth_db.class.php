@@ -19,57 +19,60 @@ class Auth_db extends Auth {
   {
     $mdb2 = getConnection();
 
-    // Try md5 password match first.
-    $sql = "SELECT id FROM tt_users".
-      " WHERE login = ".$mdb2->quote($login)." AND password = md5(".$mdb2->quote($password).") AND status = 1";
-
+    $sql = "SELECT id, password FROM tt_users WHERE login = ".$mdb2->quote($login)." AND status = 1";
     $res = $mdb2->query($sql);
     if (is_a($res, 'PEAR_Error')) {
       die($res->getMessage());
     }
-
     $val = $res->fetchRow();
-    if (isset($val['id']) && $val['id'] > 0) {
-      return array('login'=>$login,'id'=>$val['id']);
-    } else {
-      // If the OLD_PASSWORDS option is defined - set it.
-      if (isTrue('OLD_PASSWORDS')) {
-        $sql = "SET SESSION old_passwords = 1";
-        $res = $mdb2->query($sql);
-        if (is_a($res, 'PEAR_Error')) {
-          die($res->getMessage());
-        }
-      }
-      // Try legacy password match. This is needed for compatibility with older versions of TT.
-      $sql = "SELECT id FROM tt_users
-        WHERE login = ".$mdb2->quote($login)." AND password = old_password(".$mdb2->quote($password).") AND status = 1";
-      $res = $mdb2->query($sql);
-      if (is_a($res, 'PEAR_Error')) {
-        return false; // Simply return false for a meaningful error message on screen, see the comment below.
-        // die($res->getMessage()); // old_password() function is removed in MySQL 5.7.5.
-                                    // We are getting a confusing "MDB2 Error: not found" in this case if we die.
-        // TODO: perhaps it's time to simplify things and remove handling of old passwords completely.
-        // HOWEVER: some users apparently never change their passwords. When I tried removing OLD_PASSWORDS
-        // support in November 2018, there were login issues with such users.
-      }
-      $val = $res->fetchRow();
-      if (isset($val['id']) && $val['id'] > 0) {
+
+    if ($val) {
+      if (ttVerifyPassword($password, $val['password'])) {
+        ttUpgradePasswordHash($val['id'], $password, $val['password']);
         return array('login'=>$login,'id'=>$val['id']);
       }
+
+      if (!ttIsModernHash($val['password'])) {
+        // If the OLD_PASSWORDS option is defined - set it.
+        if (isTrue('OLD_PASSWORDS')) {
+          $sql = "SET SESSION old_passwords = 1";
+          $res = $mdb2->query($sql);
+          if (is_a($res, 'PEAR_Error')) {
+            die($res->getMessage());
+          }
+        }
+        // Try legacy password match. This is needed for compatibility with older versions of TT.
+        $sql = "SELECT id FROM tt_users
+          WHERE login = ".$mdb2->quote($login)." AND password = old_password(".$mdb2->quote($password).") AND status = 1";
+        $res = $mdb2->query($sql);
+        if (is_a($res, 'PEAR_Error')) {
+          return false; // old_password() function is removed in MySQL 5.7.5.
+        }
+        $legacy = $res->fetchRow();
+        if (isset($legacy['id']) && $legacy['id'] > 0) {
+          ttUpgradePasswordHash($legacy['id'], $password, $val['password']);
+          return array('login'=>$login,'id'=>$legacy['id']);
+        }
+      }
+    } else {
+      // Spend similar time for unknown logins so that response time does not reveal them.
+      password_hash($password, PASSWORD_DEFAULT);
     }
 
     // Special handling for admin@localhost - search for an account with admin role with a matching password.
     if ($login == 'admin@localhost') {
-      $sql = "SELECT u.id, u.login FROM tt_users u".
+      $sql = "SELECT u.id, u.login, u.password FROM tt_users u".
         " LEFT JOIN tt_roles r on (u.role_id = r.id)".
-        " WHERE r.rank = 1024 AND password = md5(".$mdb2->quote($password).") AND u.status = 1";
+        " WHERE r.rank = 1024 AND u.status = 1";
       $res = $mdb2->query($sql);
       if (is_a($res, 'PEAR_Error')) {
         die($res->getMessage());
       }
-      $val = $res->fetchRow();
-      if (isset($val['id']) && $val['id'] > 0) {
-        return array('login'=>$val['login'],'id'=>$val['id']);
+      while ($admin = $res->fetchRow()) {
+        if (ttVerifyPassword($password, $admin['password'])) {
+          ttUpgradePasswordHash($admin['id'], $password, $admin['password']);
+          return array('login'=>$admin['login'],'id'=>$admin['id']);
+        }
       }
     }
 

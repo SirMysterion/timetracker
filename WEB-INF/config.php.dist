@@ -171,6 +171,11 @@ define('AUTH_MODULE', 'db');
 // It can be used when you access the application via a proxy.
 // define('HTTP_TARGET', 'localhost:8080');
 
+// APP_BASE_URL - public URL of this site, without a trailing slash. Required for password
+// reset emails, because links are never built from the request Host header.
+//
+// define('APP_BASE_URL', 'https://timetracker.example.com');
+
 // FILE_STORAGE_URI - location of a remote file storage service, required for the Attachments
 // plugin. There is no default: files are never sent anywhere unless this is defined.
 //

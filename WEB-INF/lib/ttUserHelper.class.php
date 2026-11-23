@@ -55,7 +55,12 @@ class ttUserHelper {
   }
 
   // The getUserIdByTmpRef obtains user id from a temporary reference (used for password resets).
-  static function getUserIdByTmpRef($ref) {
+  // Tokens are stored hashed, with a prefix that separates password resets from 2FA codes.
+  private static function tmpRefHash($ref, $purpose) {
+    return ($purpose === '2fa' ? 'f' : 'p').substr(hash('sha256', $ref), 0, 31);
+  }
+
+  static function getUserIdByTmpRef($ref, $purpose = 'reset') {
     $mdb2 = getConnection();
 
     // Some protection for brute force attacks to guess a reference for user.
@@ -63,7 +68,10 @@ class ttUserHelper {
     $sql = "delete from tt_tmp_refs where created < now() - interval 1 hour";
     $affected = $mdb2->exec($sql);
 
-    $sql = "select user_id from tt_tmp_refs where ref = ".$mdb2->quote($ref);
+    if (!is_string($ref) || !preg_match('/^[0-9a-f]{32}$/', $ref))
+      return false;
+
+    $sql = "select user_id from tt_tmp_refs where ref = ".$mdb2->quote(self::tmpRefHash($ref, $purpose));
     $res = $mdb2->query($sql);
 
     if (!is_a($res, 'PEAR_Error')) {
@@ -79,9 +87,7 @@ class ttUserHelper {
     global $user;
     $mdb2 = getConnection();
 
-    $password = $mdb2->quote($fields['password']);
-    if($hash)
-      $password = 'md5('.$password.')';
+    $password = $mdb2->quote($hash ? ttHashPassword($fields['password']) : $fields['password']);
     $email = isset($fields['email']) ? $fields['email'] : '';
     $group_id = (int) $fields['group_id'];
     $org_id = (int) $fields['org_id'];
@@ -143,7 +149,7 @@ class ttUserHelper {
     }
 
     if (isset($fields['password']))
-      $pass_part = ', password = md5('.$mdb2->quote($fields['password']).')';
+      $pass_part = ', password = '.$mdb2->quote(ttHashPassword($fields['password']));
 
     if (isset($fields['name']))
       $name_part = ', name = '.$mdb2->quote($fields['name']);
@@ -304,7 +310,7 @@ class ttUserHelper {
   static function recentRefExists($user_id) {
     $mdb2 = getConnection();
 
-    $sql = "select count(*) as cnt from tt_tmp_refs where user_id = $user_id and created > now() - interval 15 minute";
+    $sql = "select count(*) as cnt from tt_tmp_refs where user_id = $user_id and ref like 'p%' and created > now() - interval 15 minute";
     $res = $mdb2->query($sql);
     if (is_a($res, 'PEAR_Error'))
       return false;
@@ -316,7 +322,7 @@ class ttUserHelper {
 
     // If we are here, there was exactly one reference during last 15 minutes.
     // Determine if it occurred within the last minute in a separate query.
-    $sql = "select created from tt_tmp_refs where user_id = $user_id and created > now() - interval 1 minute";
+    $sql = "select created from tt_tmp_refs where user_id = $user_id and ref like 'p%' and created > now() - interval 1 minute";
     $res = $mdb2->query($sql);
     if (is_a($res, 'PEAR_Error'))
       return false;
@@ -328,21 +334,29 @@ class ttUserHelper {
   }
 
   // The saveTmpRef saves a temporary reference for user that is used to reset user password.
-  static function saveTmpRef($ref, $user_id) {
+  static function saveTmpRef($ref, $user_id, $purpose = 'reset') {
     $mdb2 = getConnection();
 
     $sql = "delete from tt_tmp_refs where created < now() - interval 1 hour";
     $affected = $mdb2->exec($sql);
 
-    $sql = "insert into tt_tmp_refs (created, ref, user_id) values(now(), ".$mdb2->quote($ref).", $user_id)";
+    $sql = "insert into tt_tmp_refs (created, ref, user_id) values(now(), ".$mdb2->quote(self::tmpRefHash($ref, $purpose)).", $user_id)";
     $affected = $mdb2->exec($sql);
+  }
+
+  // The deleteTmpRefs removes outstanding references of one type for user.
+  static function deleteTmpRefs($user_id, $purpose) {
+    $mdb2 = getConnection();
+    $user_id = (int)$user_id;
+    $prefix = $purpose === '2fa' ? 'f' : 'p';
+    $mdb2->exec("delete from tt_tmp_refs where user_id = $user_id and ref like '$prefix%'");
   }
 
   // The setPassword function updates password for user.
   static function setPassword($user_id, $password) {
     $mdb2 = getConnection();
 
-    $sql = "update tt_users set password = md5(".$mdb2->quote($password).") where id = $user_id";
+    $sql = "update tt_users set password = ".$mdb2->quote(ttHashPassword($password))." where id = $user_id";
     $affected = $mdb2->exec($sql);
 
     if (!is_a($affected, 'PEAR_Error')) {

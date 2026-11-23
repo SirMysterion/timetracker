@@ -61,6 +61,13 @@ if ($request->isPost()) {
 
     ttUserHelper::setPassword($user_id, $cl_password1);
 
+    // A reset link must not bypass two-factor authentication.
+    $config = $user->getConfigHelper();
+    if ($config->getDefinedValue('2fa') && !$user->can('override_2fa')) {
+      header('Location: login.php');
+      exit();
+    }
+
     if ($auth->doLogin($user->login, $cl_password1)) {
       setcookie(LOGIN_COOKIE_NAME, $user->login, ttCookieOptions(time() + COOKIE_EXPIRE));
       // Redirect, depending on user role.

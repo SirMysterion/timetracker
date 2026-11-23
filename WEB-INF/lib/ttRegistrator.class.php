@@ -142,7 +142,7 @@ class ttRegistrator {
     $mdb2 = getConnection();
 
     $login = $mdb2->quote($this->login);
-    $password = 'md5('.$mdb2->quote($this->password1).')';
+    $password = $mdb2->quote(ttHashPassword($this->password1));
     $name = $mdb2->quote($this->user_name);
     $email = $mdb2->quote($this->email);
     $created = 'now()';
