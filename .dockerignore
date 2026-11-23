@@ -3,3 +3,15 @@ anuko_db
 README.md
 dbinstall.php
 
+# Keep VCS, compose and build metadata out of the build context so the
+# blanket "COPY . /var/www/html/" in dockerfile-tt cannot leak them.
+# NOTE: mysql.sql is intentionally NOT ignored here, because dockerfile-db
+# needs it ("COPY mysql.sql ..."). It is removed from the web image in
+# dockerfile-tt instead. Likewise WEB-INF/config.php.dist is kept (the web
+# build generates config.php from it) and removed afterwards.
+.git
+.gitignore
+.dockerignore
+docker-compose*.yml
+docker-compose*.yaml
+dockerfile-*

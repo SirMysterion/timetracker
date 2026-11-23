@@ -36,4 +36,31 @@ RUN sed -i "s|mysqli://root:no@localhost/dbname|mysqli://anuko_user:anuko_pw@anu
 # Note that db is defined as anuko_db/timetracker where anuko_db is service name and timetracker is db name.
 # See docker-compose.yml for details.
 
+# Remove build-only files that would otherwise stay web-readable in the webroot.
+# config.php.dist has already been used to generate config.php above; mysql.sql
+# is only needed by the database image, not here.
+RUN rm -f /var/www/html/WEB-INF/config.php.dist /var/www/html/mysql.sql
+
+# Harden Apache. Deny direct HTTP access to WEB-INF, the .git directory, and
+# build/VCS files. PHP includes these from disk, never over HTTP, so denying
+# them breaks nothing. Written to conf-enabled so it always loads, regardless
+# of AllowOverride (this image ignores .htaccess by default).
+RUN { \
+      echo '<Directory /var/www/html>'; \
+      echo '  Options -Indexes'; \
+      echo '</Directory>'; \
+      echo '<Directory /var/www/html/WEB-INF>'; \
+      echo '  Require all denied'; \
+      echo '</Directory>'; \
+      echo '<DirectoryMatch "^/var/www/html/\.git">'; \
+      echo '  Require all denied'; \
+      echo '</DirectoryMatch>'; \
+      echo '<FilesMatch "(?i)\.(sql|dist|ya?ml)$">'; \
+      echo '  Require all denied'; \
+      echo '</FilesMatch>'; \
+      echo '<FilesMatch "(?i)^(dockerfile|\.git|\.env|\.docker)">'; \
+      echo '  Require all denied'; \
+      echo '</FilesMatch>'; \
+    } > /etc/apache2/conf-enabled/zz-tt-security.conf
+
 RUN chown -R www-data /var/www/html/
