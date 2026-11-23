@@ -167,6 +167,15 @@ if ($useAssignToTimesheet) {
 
 if ($request->isPost()) {
 
+  // Buttons are only displayed to users allowed to act, so enforce the same rules here.
+  if (($request->getParameter('btn_mark_approved') && !$useMarkApproved)
+       || ($request->getParameter('btn_mark_paid') && !$useMarkPaid)
+       || ($request->getParameter('btn_assign_invoice') && !$useAssignToInvoice)
+       || ($request->getParameter('btn_assign_timesheet') && !$useAssignToTimesheet)) {
+    header('Location: access_denied.php');
+    exit();
+  }
+
   // Validate parameters and at the same time build arrays of record ids.
   if (($request->getParameter('btn_mark_approved') && 2 == $request->getParameter('mark_approved_select_options'))
        || ($request->getParameter('btn_mark_paid') && 2 == $request->getParameter('mark_paid_select_options'))
@@ -174,10 +183,11 @@ if ($request->isPost()) {
        || ($request->getParameter('btn_assign_timesheet') && 2 == $request->getParameter('assign_timesheet_select_options'))) {
     // We act on selected records. Are there any?
     foreach($_POST as $key => $val) {
-      if ('log_id_' == substr($key, 0, 7))
-        $time_log_ids[] = substr($key, 7);
-      if ('item_id_' == substr($key, 0, 8))
-        $expense_item_ids[] = substr($key, 8);
+      // Record ids are used in SQL, so accept digits only.
+      if ('log_id_' == substr($key, 0, 7) && ctype_digit(substr($key, 7)))
+        $time_log_ids[] = (int)substr($key, 7);
+      if ('item_id_' == substr($key, 0, 8) && ctype_digit(substr($key, 8)))
+        $expense_item_ids[] = (int)substr($key, 8);
     }
     if (!$time_log_ids && !$expense_item_ids) $err->Add($i18n->get('error.record')); // There are no selected records.
     // Validation of parameteres ended here.
@@ -229,6 +239,14 @@ if ($request->isPost()) {
 
       // Determine invoice id.
       $invoice_id = $request->getParameter('recent_invoice');
+      if ($invoice_id !== null) {
+        // Only invoices offered in the dropdown are valid.
+        if (!$recent_invoices || !in_array((string)$invoice_id, array_map('strval', array_column($recent_invoices, 'id')), true)) {
+          header('Location: access_denied.php');
+          exit();
+        }
+        $invoice_id = (int)$invoice_id;
+      }
 
       // Assign as requested.
       if ($time_log_ids || $expense_item_ids) {
@@ -244,6 +262,14 @@ if ($request->isPost()) {
 
       // Determine invoice id.
       $timesheet_id = $request->getParameter('timesheet');
+      if ($timesheet_id !== null) {
+        // Only timesheets offered in the dropdown are valid.
+        if (!in_array((string)$timesheet_id, array_map('strval', array_column($timesheets, 'id')), true)) {
+          header('Location: access_denied.php');
+          exit();
+        }
+        $timesheet_id = (int)$timesheet_id;
+      }
 
       // Assign as requested.
       if ($time_log_ids) {
