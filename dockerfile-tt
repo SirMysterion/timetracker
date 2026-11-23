@@ -45,7 +45,17 @@ RUN rm -f /var/www/html/WEB-INF/config.php.dist /var/www/html/mysql.sql
 # build/VCS files. The one exception is generated chart images, which charts.php
 # serves from WEB-INF/templates_c. Written to conf-enabled so it always loads,
 # regardless of AllowOverride (this image ignores .htaccess by default).
+RUN a2enmod headers
 RUN { \
+      echo 'ServerTokens Prod'; \
+      echo 'ServerSignature Off'; \
+      echo 'TraceEnable Off'; \
+      echo 'Header always set X-Content-Type-Options "nosniff"'; \
+      echo 'Header always set X-Frame-Options "SAMEORIGIN"'; \
+      echo 'Header always set Referrer-Policy "same-origin"'; \
+      echo '<Files "cron.php">'; \
+      echo '  Require local'; \
+      echo '</Files>'; \
       echo '<Directory /var/www/html>'; \
       echo '  Options -Indexes'; \
       echo '</Directory>'; \
@@ -68,4 +78,14 @@ RUN { \
       echo '</Directory>'; \
     } > /etc/apache2/conf-enabled/zz-tt-security.conf
 
-RUN chown -R www-data /var/www/html/
+# Do not reveal the PHP version in response headers.
+RUN echo 'expose_php = Off' > "$PHP_INI_DIR/conf.d/zz-tt-security.ini"
+
+# The web user can read the application but only write compiled templates,
+# chart images and temporary import/export files.
+RUN chown -R root:root /var/www/html \
+ && find /var/www/html -type d -exec chmod 755 {} + \
+ && find /var/www/html -type f -exec chmod 644 {} + \
+ && chown -R www-data:www-data /var/www/html/WEB-INF/templates_c \
+ && chown root:www-data /var/www/html/WEB-INF/config.php \
+ && chmod 640 /var/www/html/WEB-INF/config.php
