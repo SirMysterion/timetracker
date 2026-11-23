@@ -41,3 +41,6 @@ License: See license.txt *}
 </table>
 <div class="button-set">{$forms.profileForm.btn_save.control}</div>
 {$forms.profileForm.close}
+{if $user->can('track_own_time') && !$user->behalf_id}
+<div class="button-set"><a href="api_tokens.php">{$i18n.api.manage}</a></div>
+{/if}
