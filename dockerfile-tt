@@ -59,6 +59,9 @@ RUN { \
       echo '<Directory /var/www/html>'; \
       echo '  Options -Indexes'; \
       echo '</Directory>'; \
+      echo '<Directory /var/www/html/api>'; \
+      echo '  FallbackResource /api/index.php'; \
+      echo '</Directory>'; \
       echo '<Directory /var/www/html/WEB-INF>'; \
       echo '  Require all denied'; \
       echo '</Directory>'; \

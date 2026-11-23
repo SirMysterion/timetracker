@@ -85,14 +85,17 @@ session_set_cookie_params(array('lifetime'=>$phpsessid_ttl, 'path'=>'/', 'secure
 // Reject session ids that were not issued by this server.
 ini_set('session.use_strict_mode', '1');
 
-// Start or resume PHP session.
-session_name(SESSION_COOKIE_NAME);
-@session_start();
+// The API and command line tools authenticate without browser sessions or cookies.
+if (!defined('TT_STATELESS')) {
+  // Start or resume PHP session.
+  session_name(SESSION_COOKIE_NAME);
+  @session_start();
 
-if (isset($_COOKIE[SESSION_COOKIE_NAME]) && session_id()) {
-  // Extend PHP session cookie lifetime by PHPSESSID_TTL (if defined, otherwise 24 hours)
-  // so that users don't have to re-login during this period from now.
-  setcookie(SESSION_COOKIE_NAME, session_id(), ttCookieOptions(time() + $phpsessid_ttl));
+  if (isset($_COOKIE[SESSION_COOKIE_NAME]) && session_id()) {
+    // Extend PHP session cookie lifetime by PHPSESSID_TTL (if defined, otherwise 24 hours)
+    // so that users don't have to re-login during this period from now.
+    setcookie(SESSION_COOKIE_NAME, session_id(), ttCookieOptions(time() + $phpsessid_ttl));
+  }
 }
 
 // Authorization.
