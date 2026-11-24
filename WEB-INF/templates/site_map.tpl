@@ -65,6 +65,9 @@
     {if $user->exists() && $user->can('manage_own_settings')}
   <div class="sitemap-item"><a href="profile_edit.php">{$i18n.menu.profile}</a></div>
     {/if}
+    {if $api_available}
+  <div class="sitemap-item"><a href="api_tokens.php">{$i18n.menu.api}</a></div>
+    {/if}
     {if $user->can('manage_basic_settings')}
   <div class="sitemap-item"><a href="group_edit.php">{$i18n.menu.group}</a></div>
     {/if}

@@ -62,6 +62,8 @@ if ($command === 'create' && count($positional) === 2) {
     exit(1);
   }
   fwrite(STDERR, "Token created. Store it now, because it cannot be shown again.\n");
+  if (!$target->isPluginEnabled('ak'))
+    fwrite(STDERR, "Warning: the API access plugin is off for this user's group, so the token will not work until a manager enables it.\n");
   echo $token."\n";
   exit(0);
 }

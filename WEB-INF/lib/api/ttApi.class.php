@@ -97,6 +97,10 @@ class ttApi {
     if (!$GLOBALS['user']->initialized || !self::ipAllowed($GLOBALS['user'])) {
       throw new ttApiError(403, 'forbidden', 'This token cannot be used from this location.');
     }
+    // A manager can switch off API access for the whole group with the "ak" plugin.
+    if (!$GLOBALS['user']->isPluginEnabled('ak')) {
+      throw new ttApiError(403, 'api_disabled', 'API access is turned off for this group.');
+    }
     return $token;
   }
 

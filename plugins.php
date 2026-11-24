@@ -32,6 +32,7 @@ if ($request->isPost()) {
   $cl_timesheets = (bool)$request->getParameter('timesheets');
   $cl_templates = (bool)$request->getParameter('templates');
   $cl_attachments = (bool)$request->getParameter('attachments');
+  $cl_api_access = (bool)$request->getParameter('api_access');
 } else {
   // Note: we get here in get, and also in post when group changes.
   // Which plugins do we have enabled in currently selected group?
@@ -54,6 +55,7 @@ if ($request->isPost()) {
   $cl_timesheets = in_array('ts', $plugins);
   $cl_templates = in_array('tp', $plugins);
   $cl_attachments = in_array('at', $plugins);
+  $cl_api_access = in_array('ak', $plugins);
 }
 
 $form = new Form('pluginsForm');
@@ -77,6 +79,7 @@ $form->addInput(array('type'=>'checkbox','name'=>'approval','value'=>$cl_approva
 $form->addInput(array('type'=>'checkbox','name'=>'timesheets','value'=>$cl_timesheets));
 $form->addInput(array('type'=>'checkbox','name'=>'templates','value'=>$cl_templates,'onchange'=>'handlePluginCheckboxes()'));
 $form->addInput(array('type'=>'checkbox','name'=>'attachments','value'=>$cl_attachments,'onchange'=>'handlePluginCheckboxes()'));
+$form->addInput(array('type'=>'checkbox','name'=>'api_access','value'=>$cl_api_access));
 
 // Submit button.
 $form->addInput(array('type'=>'submit','name'=>'btn_save','value'=>$i18n->get('button.save')));
@@ -121,6 +124,8 @@ if ($request->isPost()) {
     $plugins .= ',tp';
   if ($cl_attachments)
     $plugins .= ',at';
+  if ($cl_api_access)
+    $plugins .= ',ak';
   $plugins = trim($plugins, ',');
 
   // Prepare a new config string.

@@ -76,6 +76,9 @@
     {if $user->exists() && $user->can('manage_own_settings')}
       <td><a href="profile_edit.php">{$i18n.menu.profile}</a></td>
     {/if}
+    {if $api_available}
+      <td><a href="api_tokens.php">{$i18n.menu.api}</a></td>
+    {/if}
     {if $user->can('manage_basic_settings')}
       <td><a href="group_edit.php">{$i18n.menu.group}</a></td>
     {/if}

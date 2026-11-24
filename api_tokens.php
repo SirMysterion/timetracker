@@ -6,7 +6,7 @@ require_once('initialize.php');
 require_once(LIBRARY_DIR.'/api/ttApiToken.class.php');
 
 // Access checks. Tokens belong to the signed-in user, so "on behalf" sessions cannot manage them.
-if (!ttAccessAllowed('manage_own_settings') || !$user->can('track_own_time') || $user->behalf_id) {
+if (!ttAccessAllowed('manage_own_settings') || !ttApiAvailable($user)) {
   header('Location: access_denied.php');
   exit();
 }

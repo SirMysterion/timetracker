@@ -147,6 +147,7 @@ if ($user->custom_logo) {
   $smarty->assign('mobile_custom_logo', '../img/'.$user->group_id.'.png');
 }
 $smarty->assign('user', $user);
+$smarty->assign('api_available', ttApiAvailable($user));
 
 // Localization.
 import('I18n');

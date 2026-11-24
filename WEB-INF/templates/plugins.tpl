@@ -210,6 +210,12 @@ function handlePluginCheckboxes() {
     <td class="td-with-input">{$forms.pluginsForm.attachments.control} <span id="attachments_doc"><a href="https://www.anuko.com/lp/tt_31.htm" target="_blank">{$i18n.label.what_is_it}</a></span></td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
+  <tr class = "small-screen-label"><td><label for="api_access">{$i18n.api.plugin}:</label></td></tr>
+  <tr>
+    <td class="large-screen-label"><label for="api_access">{$i18n.api.plugin}:</label></td>
+    <td class="td-with-input">{$forms.pluginsForm.api_access.control} {if $api_available}<a href="api_tokens.php">{$i18n.label.configure}</a>{/if}</td>
+  </tr>
+  <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
 </table>
 <div class="button-set">{$forms.pluginsForm.btn_save.control}</div>
 {$forms.pluginsForm.close}

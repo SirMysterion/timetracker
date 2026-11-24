@@ -663,6 +663,13 @@ function ttClearLoginFailures($login) {
   $mdb2->exec("delete from tt_login_attempts where login_hash = ".$mdb2->quote(ttLoginThrottleKey($login)));
 }
 
+// ttApiAvailable determines whether a user can manage API tokens for their own time.
+// The "ak" (API keys) plugin must be enabled for the user's group.
+function ttApiAvailable($user) {
+  return $user && $user->initialized && $user->isPluginEnabled('ak') && $user->can('track_own_time')
+    && $user->can('manage_own_settings') && !$user->behalf_id && !$user->behalf_group_id;
+}
+
 // ttAppBaseUrl returns the configured public URL of the application.
 // The Host request header is not used because clients can forge it.
 function ttAppBaseUrl() {
