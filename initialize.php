@@ -21,7 +21,7 @@ if (version_compare(phpversion(), '8.1', '>=')) {
     die("mysqli_report function is not available."); // No point to continue as mysqli will not work.
 }
 
-define("APP_VERSION", "1.23.1");
+define("APP_VERSION", "1.23.2");
 define("APP_DIR", dirname(__FILE__));
 define("LIBRARY_DIR", APP_DIR."/WEB-INF/lib");
 define("TEMPLATE_DIR", APP_DIR."/WEB-INF/templates");
@@ -49,6 +49,20 @@ if (strrpos(DSN, 'mysql://', -strlen(DSN)) !== FALSE) {
 
 // Require other extensions.
 check_extension('mbstring');
+
+// Branding fallbacks. These let a deployment set its own product name and
+// logo from config.php (which is volume-mounted), with no template edits.
+// Defined here only if config.php did not set them, so existing configs keep
+// working. The copyright holder is NOT configurable: Anuko owns the code and
+// the footer copyright is hardcoded in footer.tpl per the SSPL license. A
+// deployment may rebrand the product name (APP_NAME) and logo, not strip the
+// Anuko copyright. Leave SUPPORT_LINK blank to hide the footer support line.
+if (!defined('APP_NAME'))     define('APP_NAME', 'Time Tracker');
+if (!defined('SHOW_LOGO'))    define('SHOW_LOGO', false);
+if (!defined('DARK_MODE'))    define('DARK_MODE', false);
+if (!defined('LOGO_LINK'))    define('LOGO_LINK', '');
+if (!defined('SUPPORT_LINK')) define('SUPPORT_LINK', '');
+if (!defined('SUPPORT_TEXT')) define('SUPPORT_TEXT', '');
 
 // If auth params are not defined (in config.php) - initialize with an empty array.
 if (!isset($GLOBALS['AUTH_MODULE_PARAMS']) || !is_array($GLOBALS['AUTH_MODULE_PARAMS']))

@@ -74,10 +74,39 @@ define('WEEKEND_START_DAY', 6);
 // define('LOGIN_COOKIE_NAME', 'tt_login');
 
 
-// Forum and help links from the main menu.
+// Forum and help links from the main menu. Leave blank to hide these menu
+// items (header.tpl only renders them when the constant is non-empty). The
+// upstream anuko.com docs/forum are defunct, so they default to blank.
 //
-define('FORUM_LINK', 'https://www.anuko.com/forum/viewforum.php?f=4');
-define('HELP_LINK', 'https://www.anuko.com/time-tracker/user-guide/index.htm');
+define('FORUM_LINK', '');
+define('HELP_LINK', '');
+
+
+// Branding. Override these to set your own product name and logo without
+// editing any template. APP_NAME is the product name shown in the footer
+// version line and used as the logo alt text. LOGO_LINK, when set, wraps the
+// header logo in a link. SUPPORT_LINK, when set, shows a "need a hand?" line
+// in the footer; blank hides it. SUPPORT_TEXT is the label for that link -
+// set it to use your own wording (e.g. "Need a hand? Open a ticket here!");
+// if left blank it falls back to the footer.contribute_msg translation. All
+// have sane defaults in initialize.php, so these lines are optional.
+//
+// NOTE: the footer copyright ("(c) Anuko") is hardcoded in footer.tpl and is
+// NOT configurable. Anuko owns the copyright in this code under the SSPL
+// license; a deployment may rebrand the product name, not remove the Anuko
+// copyright notice.
+//
+// SHOW_LOGO (default false): false hides the logo image but keeps the banner
+// strip (both themes); set true to show img/logo.png. DARK_MODE (default
+// false): false forces light mode; set true to follow the OS/browser dark
+// preference (links dark.css).
+//
+// define('APP_NAME', 'Time Tracker');
+// define('SHOW_LOGO', false);
+// define('DARK_MODE', false);
+// define('LOGO_LINK', '');
+// define('SUPPORT_LINK', '');
+// define('SUPPORT_TEXT', '');
 
 
 // Default sender for mail.

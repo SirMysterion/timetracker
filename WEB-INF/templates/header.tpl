@@ -6,6 +6,9 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link href="{constant('DEFAULT_CSS')}" rel="stylesheet">
+{if constant('DARK_MODE')}
+  <link href="dark.css" rel="stylesheet">
+{/if}
 {if (isset($i18n.language.rtl) && $i18n.language.rtl)}
   <link href="{constant('RTL_CSS')}" rel="stylesheet">
 {/if}
@@ -21,13 +24,15 @@
   <script src="js/strptime.js"></script>
 </head>
 
-<body{if isset($onload)} {$onload}{/if}>
+<body{if !constant('SHOW_LOGO')} class="logo-hidden"{/if}{if isset($onload)} {$onload}{/if}>
 
 <div class="logo">
 {if $user->custom_logo}
-  <img alt="Time Tracker" width="300" height="43" src="{$custom_logo}">
+  <img alt="{constant('APP_NAME')}" width="300" height="43" src="{$custom_logo}">
+{elseif constant('LOGO_LINK')}
+  <a href="{constant('LOGO_LINK')}" target="_blank"><img alt="{constant('APP_NAME')}" width="300" height="43" src="img/logo.png"></a>
 {else}
-  <a href="https://www.anuko.com/lp/tt_1.htm" target="_blank"><img alt="Anuko Time Tracker" width="300" height="43" src="img/logo.png"></a>
+  <img alt="{constant('APP_NAME')}" width="300" height="43" src="img/logo.png">
 {/if}
 </div>
 
@@ -36,7 +41,7 @@
   <table class="top-menu-table">
     <tr>
       <td><a href="site_map.php">{$i18n.label.menu}</a> </td>
-      <td><a href="{constant('HELP_LINK')}">{$i18n.menu.help}</a></td>
+      {if constant('HELP_LINK')}<td><a href="{constant('HELP_LINK')}">{$i18n.menu.help}</a></td>{/if}
     </tr>
   </table>
 </div>
@@ -50,8 +55,8 @@
   <table class="top-menu-table">
     <tr>
       <td><a href="logout.php">{$i18n.menu.logout}</a></td>
-      <td><a href="{constant('FORUM_LINK')}" target="_blank">{$i18n.menu.forum}</a></td>
-      <td><a href="{constant('HELP_LINK')}" target="_blank">{$i18n.menu.help}</a></td>
+      {if constant('FORUM_LINK')}<td><a href="{constant('FORUM_LINK')}" target="_blank">{$i18n.menu.forum}</a></td>{/if}
+      {if constant('HELP_LINK')}<td><a href="{constant('HELP_LINK')}" target="_blank">{$i18n.menu.help}</a></td>{/if}
     </tr>
   </table>
 </div>
@@ -85,8 +90,8 @@
     {if $user->can('manage_features')}
       <td><a href="plugins.php">{$i18n.menu.plugins}</a></td>
     {/if}
-      <td><a href="{constant('FORUM_LINK')}" target="_blank">{$i18n.menu.forum}</a></td>
-      <td><a href="{constant('HELP_LINK')}" target="_blank">{$i18n.menu.help}</a></td>
+      {if constant('FORUM_LINK')}<td><a href="{constant('FORUM_LINK')}" target="_blank">{$i18n.menu.forum}</a></td>{/if}
+      {if constant('HELP_LINK')}<td><a href="{constant('HELP_LINK')}" target="_blank">{$i18n.menu.help}</a></td>{/if}
     </tr>
   </table>
 </div>
@@ -151,8 +156,8 @@
   {if isTrue('MULTIORG_MODE') && constant('AUTH_MODULE') == 'db'}
       <td><a href="register.php">{$i18n.menu.register}</a></td>
   {/if}
-      <td><a href="{constant('FORUM_LINK')}" target="_blank">{$i18n.menu.forum}</a></td>
-      <td><a href="{constant('HELP_LINK')}" target="_blank">{$i18n.menu.help}</a></td>
+      {if constant('FORUM_LINK')}<td><a href="{constant('FORUM_LINK')}" target="_blank">{$i18n.menu.forum}</a></td>{/if}
+      {if constant('HELP_LINK')}<td><a href="{constant('HELP_LINK')}" target="_blank">{$i18n.menu.help}</a></td>{/if}
     </tr>
   </table>
 </div>

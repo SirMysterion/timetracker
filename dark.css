@@ -1,0 +1,184 @@
+/* Dark theme - gated stylesheet. Linked by header.tpl ONLY when DARK_MODE is
+   enabled in config.php; once linked it follows the OS/browser
+   prefers-color-scheme. Split out of default.css so the default (DARK_MODE
+   off) is always light mode regardless of system setting. */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  a { color: #6db3f2; }
+  a:visited { color: #b88ae0; }
+  a:hover { color: #9ecbff; }
+
+  div.logo {
+    background-color: #2a4a6a;
+  }
+
+  div.top-submenu-large-screen {
+    background-color: #2a2a2a;
+  }
+
+  .top-submenu-large-screen a {
+    color: #b0b0b0;
+  }
+
+  div.page-title {
+    color: #a0a0a0;
+    border-bottom-color: #404040;
+  }
+
+  .page-messages {
+    color: #6db3f2;
+  }
+
+  div.contribute-msg {
+    background-color: #2a2a2a;
+  }
+
+  .x-scrollable-table th {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+  }
+
+  .x-scrollable-table tr:nth-child(even) { background: #1a1a1a; }
+  .x-scrollable-table tr:nth-child(odd) { background: #252525; }
+
+  .page-content input,
+  .page-content input:focus {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #404040;
+  }
+
+  .page-content input:focus {
+    border-color: #6db3f2;
+  }
+
+  #description, #address, #item_name, #comment, #custom_css, #custom_translation, #content,
+  #note {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #404040;
+  }
+
+  #description:focus, #address:focus, #item_name:focus, #comment:focus, #custom_css:focus, #custom_translation:focus, #content:focus,
+  #note:focus {
+    border-color: #6db3f2;
+  }
+
+  .dropdown-field,
+  select {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #404040;
+  }
+
+  input[type="submit"], input[type="button"] {
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+    border: 1px solid #505050;
+  }
+
+  input[type="submit"]:hover, input[type="button"]:hover {
+    background-color: #4a4a4a;
+  }
+
+  a.sso-button {
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+    border-color: #505050;
+  }
+  a.sso-button:hover { background-color: #4a4a4a; }
+  a.sso-button:visited { color: #e0e0e0; }
+
+  .calendarHeader {
+    background-color: #2a2a2a;
+    color: #b0b0b0;
+  }
+
+  .calendarDay {
+    background-color: #1a1a1a;
+    color: #b0b0b0;
+    border-color: #404040;
+  }
+
+  .calendarDaySelected {
+    background-color: #2a4a6a;
+    color: #e0e0e0;
+    border-color: #404040;
+  }
+
+  .calendarDayWeekend,
+  .calendarDayHoliday {
+    background-color: #252525;
+    color: #808080;
+    border-color: #404040;
+  }
+
+  .calendarDayHeader {
+    color: #b0b0b0;
+    border-color: #1a1a1a;
+  }
+
+  .calendarDayHeaderWeekend {
+    color: #707070;
+    border-color: #1a1a1a;
+  }
+
+  .calendarLinkWeekend,
+  .calendarLinkHoliday {
+    color: #707070;
+  }
+
+  .calendarLinkRecordsExist {
+    color: #ff6b6b;
+  }
+
+  .calendarLinkNonCompleteDay {
+    color: #c77dff;
+  }
+
+  .rowReportItem {
+    background-color: #1a1a1a;
+  }
+
+  .rowReportItemAlt {
+    background-color: #252525;
+  }
+
+  .rowReportSubtotal {
+    background-color: #2a2a2a;
+  }
+
+  .divider {
+    background-color: #2a2a2a;
+  }
+
+  .sectionHeader {
+    border-bottom-color: #404040;
+  }
+
+  span.format-example {
+    color: #888888;
+  }
+
+  #ldapDefaultDomain {
+    color: #888888;
+  }
+
+  .pageTitle {
+    color: #a0a0a0;
+  }
+
+  .mainMenu {
+    color: #b0b0b0;
+  }
+
+  .uncompleted-entry {
+    border-color: rgba(255, 255, 255, .1);
+    background-color: rgba(255, 255, 255, .1);
+  }
+}
