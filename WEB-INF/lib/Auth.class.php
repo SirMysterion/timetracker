@@ -71,8 +71,15 @@ class Auth {
     if ($auth === false)
       return false;
 
-    $login = $auth['login'];
+    return $this->setAuthByLogin($auth['login']);
+  }
 
+  // setAuthByLogin - resolves a login to an active Time Tracker user and
+  // establishes the session for it, WITHOUT checking a password. It is the
+  // shared tail end of doLogin and is also used by redirect-based external
+  // authentication (such as OIDC) where the password is never seen by us.
+  // The user must already exist in tt_users and be active.
+  function setAuthByLogin($login) {
     $mdb2 = getConnection();
     $sql = "SELECT id FROM tt_users WHERE login = ".$mdb2->quote($login)." AND status = 1";
     $res = $mdb2->query($sql);
@@ -82,7 +89,7 @@ class Auth {
       return false;
     }
     $val = $res->fetchRow();
-    if (!$val['id']) {
+    if (!$val || !$val['id']) {
       if (isTrue('DEBUG'))
         echo 'login "'.$login.'" does not exist in Time Tracker database.<br />';
       return false;
