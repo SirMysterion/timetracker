@@ -7,8 +7,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="week_menu">{$i18n.label.menu}:</label></td>
     <td class="td-with-input">{$forms.weekViewForm.week_menu.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_35.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_35.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -16,8 +14,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="week_note">{$i18n.label.week_note}:</label></td>
     <td class="td-with-input">{$forms.weekViewForm.week_note.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_11.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_11.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -25,8 +21,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="week_list">{$i18n.label.week_list}:</label></td>
     <td class="td-with-input">{$forms.weekViewForm.week_list.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_12.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_12.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -34,8 +28,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="notes">{$i18n.label.notes}:</label></td>
     <td class="td-with-input">{$forms.weekViewForm.notes.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_13.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_13.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -43,8 +35,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="weekends">{$i18n.label.weekends}:</label></td>
     <td class="td-with-input">{$forms.weekViewForm.weekends.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_56.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_56.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>

@@ -49,8 +49,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="bind_templates_with_projects">{$i18n.label.bind_templates_with_projects}:</label></td>
     <td class="td-with-input">{$forms.templatesForm.bind_templates_with_projects.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_42.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_42.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -59,8 +57,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="prepopulate_note">{$i18n.label.prepopulate_note}:</label></td>
     <td class="td-with-input">{$forms.templatesForm.prepopulate_note.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_43.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_43.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>

@@ -14,8 +14,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="cron_spec">{$i18n.label.schedule} (*):</label></td>
     <td class="td-with-input">{$forms.notificationForm.cron_spec.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_6.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_6.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -47,8 +45,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="report_condition">{$i18n.label.condition}:</label></td>
     <td class="td-with-input">{$forms.notificationForm.report_condition.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_9.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_9.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>

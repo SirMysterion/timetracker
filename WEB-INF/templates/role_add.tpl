@@ -19,8 +19,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="rank">{$i18n.form.roles.rank}:</label></td>
     <td class="td-with-input">{$forms.roleForm.rank.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_20.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_20.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>

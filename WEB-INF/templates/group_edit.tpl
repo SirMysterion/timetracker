@@ -79,8 +79,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="holidays">{$i18n.form.group_edit.holidays}:</label></td>
     <td class="td-with-input">{$forms.groupForm.holidays.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_36.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_36.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -88,8 +86,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="tracking_mode">{$i18n.form.group_edit.tracking_mode}:</label></td>
     <td class="td-with-input">{$forms.groupForm.tracking_mode.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_47.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_47.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -97,8 +93,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="record_type">{$i18n.form.group_edit.record_type}:</label></td>
     <td class="td-with-input">{$forms.groupForm.record_type.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_38.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_38.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -106,8 +100,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="punch_mode">{$i18n.form.group_edit.punch_mode}:</label></td>
     <td class="td-with-input">{$forms.groupForm.punch_mode.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_18.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_18.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -115,8 +107,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="one_uncompleted">{$i18n.form.group_edit.one_uncompleted}:</label></td>
     <td class="td-with-input">{$forms.groupForm.one_uncompleted.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_55.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_55.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -124,8 +114,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="allow_overlap">{$i18n.form.group_edit.allow_overlap}:</label></td>
     <td class="td-with-input">{$forms.groupForm.allow_overlap.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_16.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_16.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -133,8 +121,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="future_entries">{$i18n.form.group_edit.future_entries}:</label></td>
     <td class="td-with-input">{$forms.groupForm.future_entries.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_17.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_17.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -142,8 +128,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="uncompleted_indicators">{$i18n.form.group_edit.uncompleted_indicators}:</label></td>
     <td class="td-with-input">{$forms.groupForm.uncompleted_indicators.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_15.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_15.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
@@ -151,8 +135,6 @@ function chLocation(newLocation) { document.location = newLocation; }
   <tr>
     <td class="large-screen-label"><label for="confirm_save">{$i18n.form.group_edit.confirm_save}:</label></td>
     <td class="td-with-input">{$forms.groupForm.confirm_save.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_26.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_26.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>

@@ -124,7 +124,7 @@ function handlePluginCheckboxes() {
   <tr class = "small-screen-label"><td><label for="puncher">{$i18n.label.puncher}:</label></td></tr>
   <tr>
     <td class="large-screen-label"><label for="puncher">{$i18n.label.puncher}:</label></td>
-    <td class="td-with-input">{$forms.pluginsForm.puncher.control} <span id="puncher_doc"><a href="https://www.anuko.com/lp/tt_51.htm" target="_blank">{$i18n.label.what_is_it}</a></span><span id="puncher_conf">{if $user->isPluginEnabled('pu')}<a href="puncher_conf.php">{$i18n.label.configure}</a>{/if}</span></td>
+    <td class="td-with-input">{$forms.pluginsForm.puncher.control} <span id="puncher_doc"></span><span id="puncher_conf">{if $user->isPluginEnabled('pu')}<a href="puncher_conf.php">{$i18n.label.configure}</a>{/if}</span></td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
   <tr class = "small-screen-label"><td><label for="clients">{$i18n.title.clients}:</label></td></tr>
@@ -159,7 +159,7 @@ function handlePluginCheckboxes() {
   <tr class = "small-screen-label"><td><label for="notifications">{$i18n.title.notifications}:</label></td></tr>
   <tr>
     <td class="large-screen-label"><label for="notifications">{$i18n.title.notifications}:</label></td>
-    <td class="td-with-input">{$forms.pluginsForm.notifications.control} <span id="notifications_doc"><a href="https://www.anuko.com/lp/tt_45.htm" target="_blank">{$i18n.label.what_is_it}</a></span><span id="notifications_conf">{if $user_exists && $user->isPluginEnabled('no')}<a href="notifications.php">{$i18n.label.configure}</a>{/if}</span></td>
+    <td class="td-with-input">{$forms.pluginsForm.notifications.control} <span id="notifications_doc"></span><span id="notifications_conf">{if $user_exists && $user->isPluginEnabled('no')}<a href="notifications.php">{$i18n.label.configure}</a>{/if}</span></td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
   <tr class = "small-screen-label"><td><label for="locking">{$i18n.title.locking}:</label></td></tr>
@@ -189,25 +189,25 @@ function handlePluginCheckboxes() {
   <tr class = "small-screen-label"><td><label for="approval">{$i18n.label.approval}:</label></td></tr>
   <tr>
     <td class="large-screen-label"><label for="approval">{$i18n.label.approval}:</label></td>
-    <td class="td-with-input">{$forms.pluginsForm.approval.control} <a href="https://www.anuko.com/lp/tt_28.htm" target="_blank">{$i18n.label.what_is_it}</a></td>
+    <td class="td-with-input">{$forms.pluginsForm.approval.control} </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
   <tr class = "small-screen-label"><td><label for="timesheets">{$i18n.title.timesheets}:</label></td></tr>
   <tr>
     <td class="large-screen-label"><label for="timesheets">{$i18n.title.timesheets}:</label></td>
-    <td class="td-with-input">{$forms.pluginsForm.timesheets.control} <a href="https://www.anuko.com/lp/tt_30.htm" target="_blank">{$i18n.label.what_is_it}</a></td>
+    <td class="td-with-input">{$forms.pluginsForm.timesheets.control} </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
   <tr class = "small-screen-label"><td><label for="templates">{$i18n.title.templates}:</label></td></tr>
   <tr>
     <td class="large-screen-label"><label for="templates">{$i18n.title.templates}:</label></td>
-    <td class="td-with-input">{$forms.pluginsForm.templates.control} <span id="templates_doc"><a href="https://www.anuko.com/lp/tt_29.htm" target="_blank">{$i18n.label.what_is_it}</a></span> <span id="templates_conf">{if $user->isPluginEnabled('tp')}<a href="templates.php">{$i18n.label.configure}</a>{/if}</span></td>
+    <td class="td-with-input">{$forms.pluginsForm.templates.control} <span id="templates_doc"></span> <span id="templates_conf">{if $user->isPluginEnabled('tp')}<a href="templates.php">{$i18n.label.configure}</a>{/if}</span></td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
   <tr class = "small-screen-label"><td><label for="attachments">{$i18n.label.attachments}:</label></td></tr>
   <tr>
     <td class="large-screen-label"><label for="attachments">{$i18n.label.attachments}:</label></td>
-    <td class="td-with-input">{$forms.pluginsForm.attachments.control} <span id="attachments_doc"><a href="https://www.anuko.com/lp/tt_31.htm" target="_blank">{$i18n.label.what_is_it}</a></span></td>
+    <td class="td-with-input">{$forms.pluginsForm.attachments.control} <span id="attachments_doc"></span></td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
   <tr class = "small-screen-label"><td><label for="api_access">{$i18n.api.plugin}:</label></td></tr>

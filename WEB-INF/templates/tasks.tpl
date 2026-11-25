@@ -11,7 +11,7 @@ License: See license.txt *}
 <table class="centered-table">
   <tr>
     <td>{$forms.tasksForm.task_required.control}</td>
-    <td><label for="task_required">{$i18n.label.required}</label> <a href="https://www.anuko.com/lp/tt_46.htm" target="_blank">{$i18n.label.what_is_it}</a></td>
+    <td><label for="task_required">{$i18n.label.required}</label> </td>
     <td>{$forms.tasksForm.btn_save.control}</td>
   </tr>
 </table>

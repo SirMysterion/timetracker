@@ -7,8 +7,6 @@ License: See license.txt *}
   <tr>
     <td class="large-screen-label"><label for="group_name">{$i18n.label.group_name} (*):</label></td>
     <td class="td-with-input">{$forms.groupForm.group_name.control}
-      <span class="what-is-it-img"><a href="https://www.anuko.com/lp/tt_37.htm" target="_blank"><img src="img/icon-question-mark.png" title="{$i18n.label.what_is_it}" alt="{$i18n.label.what_is_it}"></a></span>
-      <span class="what-is-it-text"><a href="https://www.anuko.com/lp/tt_37.htm" target="_blank">{$i18n.label.what_is_it}</a></span>
     </td>
   </tr>
   <tr><td><div class="small-screen-form-control-separator"></div></td></tr>
