@@ -39,7 +39,8 @@ class Auth_oidc extends Auth {
     $fallback = $this->getParam('fallback_login', 'admin@localhost');
     if ($fallback && $login === $fallback) {
       import('auth.Auth_db');
-      return Auth_db::authenticate($login, $password);
+      $dbAuth = new Auth_db();
+      return $dbAuth->authenticate($login, $password);
     }
     return false;
   }
