@@ -27,11 +27,17 @@ class Auth_oidc extends Auth {
 
   /**
    * authenticate - OIDC logins do not go through login/password. The only
-   * credential path kept here is the admin@localhost database fallback, so an
+   * credential path kept here is a single break-glass database account, so an
    * administrator can still sign in locally if the provider is unreachable.
+   *
+   * The break-glass login defaults to 'admin@localhost' but is configurable via
+   * the 'fallback_login' parameter, because a site's local admin account may use
+   * a different login (for example a bare 'admin'). Set 'fallback_login' => null
+   * to disable the local fallback entirely.
    */
   function authenticate($login, $password) {
-    if ($login == 'admin@localhost') {
+    $fallback = $this->getParam('fallback_login', 'admin@localhost');
+    if ($fallback && $login === $fallback) {
       import('auth.Auth_db');
       return Auth_db::authenticate($login, $password);
     }
@@ -47,9 +53,39 @@ class Auth_oidc extends Auth {
     return isset($this->params[$key]) ? $this->params[$key] : $default;
   }
 
-  // loginClaim - the ID token claim that maps to tt_users.login.
+  // loginClaim - the ID token claim matched against a Time Tracker account.
   function loginClaim() {
     return $this->getParam('login_claim', 'email');
+  }
+
+  /**
+   * resolveLogin - map a claim value to a local tt_users login. An exact,
+   * active login match wins. Failing that, if exactly one active user has that
+   * value as their email, that user's login is returned. This lets an SSO
+   * identity such as an email address (a common preferred_username) resolve to
+   * an account whose Time Tracker login is a different short name, without any
+   * account being created here. Returns the login string, or false when there
+   * is no unambiguous active match.
+   */
+  function resolveLogin($value) {
+    if ($value === null || $value === '') return false;
+    $mdb2 = getConnection();
+    $q = $mdb2->quote($value);
+
+    // Prefer an exact login match.
+    $res = $mdb2->query("SELECT login FROM tt_users WHERE login = $q AND status = 1");
+    if (!is_a($res, 'PEAR_Error')) {
+      $row = $res->fetchRow();
+      if ($row && $row['login']) return $row['login'];
+    }
+
+    // Otherwise accept a unique active email match (ambiguous matches are refused).
+    $res = $mdb2->query("SELECT login FROM tt_users WHERE email = $q AND status = 1");
+    if (is_a($res, 'PEAR_Error')) return false;
+    $first = $res->fetchRow();
+    if (!$first || !$first['login']) return false;
+    if ($res->fetchRow()) return false; // more than one active user shares this email
+    return $first['login'];
   }
 
   // scopes - requested scopes; openid is always included.

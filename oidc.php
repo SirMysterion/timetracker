@@ -50,17 +50,20 @@ if ($request->getParameter('code') || $request->getParameter('error')) {
     exit();
   }
 
-  // Map the configured claim to a Time Tracker login.
+  // Read the configured claim from the ID token.
   $claimName = $auth->loginClaim();
-  $login = isset($claims[$claimName]) ? $claims[$claimName] : null;
-  if (!$login) {
+  $claimValue = isset($claims[$claimName]) ? $claims[$claimName] : null;
+  if (!$claimValue) {
     header('Location: login.php');
     exit();
   }
 
-  // Pre-provisioned model: the user must already exist and be active.
-  // (No account is created here.)
-  if (!$auth->setAuthByLogin($login)) {
+  // Pre-provisioned model: the user must already exist and be active. The claim
+  // is matched against the local login first, then a unique active email, so an
+  // email-style identity resolves to an account with a short login. No account
+  // is created here.
+  $login = $auth->resolveLogin($claimValue);
+  if (!$login || !$auth->setAuthByLogin($login)) {
     header('Location: access_denied.php');
     exit();
   }

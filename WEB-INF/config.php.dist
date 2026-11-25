@@ -169,9 +169,10 @@ define('AUTH_MODULE', 'db');
 // OpenID Connect (OIDC) single sign-on example, e.g. for Keycloak.
 //
 // Users are authenticated by the provider via a browser redirect flow. A user
-// authenticated by the provider must ALREADY EXIST in Time Tracker with a login
-// equal to the claim named by 'login_claim' (this module does not create users).
-// Create the matching Time Tracker accounts in advance (same model as LDAP).
+// authenticated by the provider must ALREADY EXIST in Time Tracker: the claim
+// named by 'login_claim' is matched against the account's login first, then a
+// unique email (this module does not create users). Create the matching Time
+// Tracker accounts in advance (same model as LDAP).
 //
 // In the provider, register a confidential client with a redirect URI of
 // https://your-tt-host/oidc.php and copy its client id and secret below.
@@ -182,7 +183,8 @@ define('AUTH_MODULE', 'db');
 //  'client_id' => 'timetracker',                                    // Client (application) id registered with the provider.
 //  'client_secret' => 'CHANGE_ME',                                  // Client secret for the confidential client.
 //  'redirect_uri' => 'https://your-tt-host/oidc.php',               // Must exactly match a redirect URI registered with the provider. Omit to derive from the request.
-//  'login_claim' => 'email',                                        // ID token claim matched against tt_users.login. Often 'email' or 'preferred_username'.
+//  'login_claim' => 'email',                                        // ID token claim identifying the user. Often 'email' or 'preferred_username'. Matched against tt_users.login first, then a unique tt_users.email.
+//  'fallback_login' => 'admin@localhost',                           // Local break-glass account allowed to sign in with a password if the provider is down. Set to your admin login, or null to disable.
 //  'scope' => 'openid email profile',                               // Requested scopes. 'openid' is always included.
 //  'logout_from_provider' => false,                                 // true also ends the session at the provider on logout (RP-initiated logout).
 //  'post_logout_redirect_uri' => 'https://your-tt-host/login.php',  // Where the provider returns after RP-initiated logout (must be registered with the provider).
